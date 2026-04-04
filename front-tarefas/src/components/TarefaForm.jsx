@@ -15,14 +15,14 @@ const TarefaForm = ({ aoAdicionar }) => {
   };
 
   return (
-    <Card className="p-4 shadow-sm border-0 mb-4 bg-white rounded-3">
+    <Card className="p-4 shadow-sm border-0 mb-4 bg-white rounded-3 w-100">
       <Form onSubmit={handleSubmit}>
-        {}
         <Row className="align-items-end g-3">
           <Col xs={12} lg={8}>
-            <Form.Group>
+            <Form.Group controlId="inputTitulo">
               <Form.Label className="fw-bold small text-muted text-uppercase">O QUE PRECISA SER FEITO?</Form.Label>
               <Form.Control 
+                name="titulo"
                 type="text" 
                 placeholder="Digite a nova demanda..." 
                 value={titulo}
@@ -32,9 +32,10 @@ const TarefaForm = ({ aoAdicionar }) => {
             </Form.Group>
           </Col>
           <Col xs={6} lg={2}>
-            <Form.Group>
+            <Form.Group controlId="selectPrioridade">
               <Form.Label className="fw-bold small text-muted text-uppercase">URGÊNCIA</Form.Label>
               <Form.Select 
+                name="prioridade"
                 value={prioridade}
                 onChange={(e) => setPrioridade(e.target.value)}
                 className="py-2"

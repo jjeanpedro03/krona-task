@@ -52,12 +52,12 @@ const TarefaItem = ({ tarefa, aoApagar, aoAlternarConclusao }) => {
           <Modal.Title className="fw-bold text-danger">Confirmar Remoção</Modal.Title>
         </Modal.Header>
         <Modal.Body className="px-4 py-3 fs-5">
-          Deseja excluir permanentemente a demanda: <br/> 
+          Deseja excluir a demanda: <br/> 
           <span className="fw-bold">"{tarefa.titulo}"</span>?
         </Modal.Body>
         <Modal.Footer className="border-0 pb-4 px-4">
-          <Button variant="light" className="px-4 py-2" onClick={() => setExibirModal(false)}>Voltar</Button>
-          <Button variant="danger" className="px-4 py-2 fw-bold" onClick={() => { aoApagar(tarefa.id); setExibirModal(false); }}>Excluir Agora</Button>
+          <Button variant="light" onClick={() => setExibirModal(false)}>Voltar</Button>
+          <Button variant="danger" className="px-4 fw-bold" onClick={() => { aoApagar(tarefa.id); setExibirModal(false); }}>Excluir Agora</Button>
         </Modal.Footer>
       </Modal>
     </>
