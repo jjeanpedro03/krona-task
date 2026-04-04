@@ -55,15 +55,21 @@ Uma aplicação Full Stack moderna que utiliza **React** no front-end e **Node.j
 ## 🚀 Como Executar
 
 ```
-1. **Banco de Dados:** Execute o arquivo `schema.sql` no seu MySQL para criar o banco `kronatask`.
-2. **Back-end:** ```bash
-   cd back-tarefas
-   npm install
-   node index.js
+1. Banco de Dados:
+Execute o arquivo `schema.sql` no seu MySQL para criar o banco `kronatask`.
 
-3. **Front-end:
+2. Back-end:
 
-Bash
+bash
+
+cd back-tarefas
+npm install
+node index.js
+
+3. Front-end:
+
+bash
+
 cd front-tarefas
 npm install
 npm run dev
