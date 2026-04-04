@@ -12,12 +12,6 @@
   <img src="./img/demo-kronatask.gif" alt="Demonstração KronaTask" width="800px" style="border-radius: 10px; border: 2px solid #0d6efd;"/>
 </p>
 
-<p align="center">
-  <a href="https://github.com/jjeanpedro03/KronaTask" target="_blank">
-    <img src="https://img.shields.io/badge/💻🚀%20Repositório%20do%20Projeto-0d6efd?style=for-the-badge&logo=github&logoColor=white" alt="Visualizar Repositório">
-  </a>
-</p>
-
 ## 🎯 Objetivo
 
 O KronaTask foi projetado para simular um painel de controle corporativo real. O objetivo foi dominar o ciclo completo de uma aplicação (CRUD), garantindo que a experiência do usuário seja impecável tanto na persistência de dados quanto na fluidez da interface.
