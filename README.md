@@ -58,10 +58,27 @@ Uma aplicação Full Stack moderna que utiliza **React** no front-end e **Node.j
 - **Clean Code:** Backend estruturado com separação clara de rotas e lógica de banco.
 - **Visual Tech:** Identidade visual baseada em tons de Dark Gray, Blue e Off-white.
 
+## 🚀 Como Executar
+
+```
+1. **Banco de Dados:** Execute o arquivo `schema.sql` no seu MySQL para criar o banco `kronatask`.
+2. **Back-end:** ```bash
+   cd back-tarefas
+   npm install
+   node index.js
+
+3. **Front-end:
+
+Bash
+cd front-tarefas
+npm install
+npm run dev
+
+```
 ## 📂 Estrutura de Pastas
 
-```text
-├── frontend/
+```
+├── front-tarefas/      # Aplicação React
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── TarefaForm.jsx
@@ -69,8 +86,8 @@ Uma aplicação Full Stack moderna que utiliza **React** no front-end e **Node.j
 │   │   │   └── TarefaItem.jsx
 │   │   ├── App.jsx
 │   │   └── index.css
-├── backend/
-│   ├── index.js          # Servidor Express & Conexão SQL
+├── back-tarefas/       # API Node.js/Express
+│   ├── index.js
 │   └── package.json
-└── database/
-    └── schema.sql        # Estrutura das tabelas
+└── schema.sql          # Script de criação do banco
+```
