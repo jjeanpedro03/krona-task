@@ -5,9 +5,30 @@ const db = require("./db");
 
 const app = express();
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    }),
+);
 app.use(express.json());
 app.use(morgan("dev"));
+
+async function inicializarBanco() {
+    try {
+        await db.query(`
+      CREATE TABLE IF NOT EXISTS tarefas (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(255) NOT NULL,
+        prioridade ENUM('baixa', 'media', 'alta') DEFAULT 'baixa',
+        concluida BOOLEAN DEFAULT false,
+        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+        console.log("📦 Tabela 'tarefas' pronta!");
+    } catch (err) {
+        console.error("❌ Erro ao inicializar banco:", err.message);
+    }
+}
 
 app.get("/teste-banco", async (req, res) => {
     try {
@@ -67,6 +88,9 @@ app.delete("/tarefas/:id", async (req, res) => {
     }
 });
 
-app.listen(3001, () => {
-    console.log("Servidor e Banco prontos na porta 3001!");
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, async () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    await inicializarBanco();
 });

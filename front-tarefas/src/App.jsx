@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from './services/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import TarefaForm from './components/TarefaForm';
@@ -8,49 +8,82 @@ import TarefaLista from './components/TarefaLista';
 function App() {
   const [tarefas, setTarefas] = useState([]);
   const [carregando, setCarregando] = useState(false);
-  const [notificacao, setNotificacao] = useState({ exibir: false, mensagem: '', cor: 'success' });
+  const [notificacao, setNotificacao] = useState({
+    exibir: false,
+    mensagem: '',
+    cor: 'success'
+  });
 
-  const mostrarAviso = (msg, cor = 'success') => {
-    setNotificacao({ exibir: true, mensagem: msg, cor });
-  };
+  function mostrarAviso(msg, cor) {
+    if (!cor) {
+      cor = 'success';
+    }
 
-  const buscarTarefas = async () => {
+    setNotificacao({
+      exibir: true,
+      mensagem: msg,
+      cor: cor
+    });
+  }
+
+  async function buscarTarefas() {
     setCarregando(true);
+
     try {
-      const res = await axios.get('http://localhost:3001/tarefas');
+      const res = await API.get('/tarefas');
       setTarefas(res.data);
     } catch (e) {
       mostrarAviso("Erro na conexão com KronaServer", "danger");
-    } finally {
-      setCarregando(false);
     }
-  };
 
-  useEffect(() => { buscarTarefas(); }, []);
+    setCarregando(false);
+  }
 
-  const adicionarTarefa = async (dados) => {
+  useEffect(function () {
+    buscarTarefas();
+  }, []);
+
+  async function adicionarTarefa(dados) {
     try {
-      await axios.post('http://localhost:3001/tarefas', dados);
+      await API.post('/tarefas', dados);
       buscarTarefas();
       mostrarAviso("Demanda registrada com sucesso!");
-    } catch (e) { mostrarAviso("Erro ao salvar no banco", "danger"); }
-  };
+    } catch (e) {
+      mostrarAviso("Erro ao salvar no banco", "danger");
+    }
+  }
 
-  const apagarTarefa = async (id) => {
+  async function apagarTarefa(id) {
     try {
-      await axios.delete(`http://localhost:3001/tarefas/${id}`);
+      await API.delete('/tarefas/' + id);
       buscarTarefas();
       mostrarAviso("Demanda removida!", "warning");
-    } catch (e) { mostrarAviso("Erro ao excluir", "danger"); }
-  };
+    } catch (e) {
+      mostrarAviso("Erro ao excluir", "danger");
+    }
+  }
 
-  const alternarConclusao = async (id, novoStatus) => {
+  async function alternarConclusao(id, novoStatus) {
     try {
-      await axios.put(`http://localhost:3001/tarefas/${id}`, { concluida: novoStatus });
+      await API.put('/tarefas/' + id, { concluida: novoStatus });
       buscarTarefas();
-      mostrarAviso(novoStatus ? "Concluída! 🎉" : "Reaberta", novoStatus ? "success" : "info");
-    } catch (e) { mostrarAviso("Erro ao atualizar status", "danger"); }
-  };
+
+      if (novoStatus) {
+        mostrarAviso("Concluída! 🎉", "success");
+      } else {
+        mostrarAviso("Reaberta", "info");
+      }
+
+    } catch (e) {
+      mostrarAviso("Erro ao atualizar status", "danger");
+    }
+  }
+
+  let spinner = null;
+
+  if (carregando) {
+    spinner = <Spinner animation="border" variant="primary" size="sm" />;
+  }
 
   return (
     <div style={{ backgroundColor: '#f0f2f5', minHeight: '100vh', width: '100vw', margin: 0, padding: 0, overflowX: 'hidden' }}>
@@ -61,22 +94,37 @@ function App() {
             <span style={{ color: '#ffffff' }}>Krona</span>
             <span style={{ color: '#0d6efd' }}>Task</span>
           </Navbar.Brand>
-          {carregando && <Spinner animation="border" variant="primary" size="sm" />}
+
+          {spinner}
         </div>
       </Navbar>
 
-      <div className="container-fluid px-4 w-100" style={{ maxWidth: '100%' }}>
+      <div className="container-fluid px-4 w-100">
         <TarefaForm aoAdicionar={adicionarTarefa} />
         <TarefaLista 
-          tarefas={tarefas} 
-          aoApagar={apagarTarefa} 
-          aoAlternarConclusao={alternarConclusao} 
+          tarefas={tarefas}
+          aoApagar={apagarTarefa}
+          aoAlternarConclusao={alternarConclusao}
         />
       </div>
 
       <ToastContainer position="bottom-end" className="p-4" style={{ zIndex: 9999 }}>
-        <Toast bg={notificacao.cor} onClose={() => setNotificacao({ ...notificacao, exibir: false })} show={notificacao.exibir} delay={3000} autohide >
-          <Toast.Body className="text-white fw-bold px-3 py-2">{notificacao.mensagem}</Toast.Body>
+        <Toast
+          bg={notificacao.cor}
+          onClose={function () {
+            setNotificacao({
+              exibir: false,
+              mensagem: '',
+              cor: notificacao.cor
+            });
+          }}
+          show={notificacao.exibir}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white fw-bold px-3 py-2">
+            {notificacao.mensagem}
+          </Toast.Body>
         </Toast>
       </ToastContainer>
     </div>
